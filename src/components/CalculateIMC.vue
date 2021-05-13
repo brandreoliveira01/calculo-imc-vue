@@ -1,69 +1,56 @@
 <template>
-  <div id="calcIMC">
-    <div class="row">
-      <img
-        src="../assets/logo.png"
-        width="50px"
-      >
-        <h2>
-          {{ title }}
-        </h2>
-    </div>
-
-    <form class="mainContent">
-      <label>
-        Altura:
-        <input autofocus type="number" min="0" step="0.01" v-model="height"> (m)
-      </label>
-      <label>
-        Peso:
-        <input autofocus type="number" min="0" v-model="weight"> (kg)
-      </label>
-      <label>
-        IMC:
-        <input autofocus type="number" :value="imc" disabled="disabled">
-      </label>
-    </form>
-  </div>
+  <v-container>
+    <v-row dense class="mt-6">
+      <v-col cols="12">
+        <v-card max-width="380" class="mx-auto" elevation="6">
+          <v-row justify="center">
+            <v-col class="mt-5" cols="12" sm="8">
+              <v-text-field
+                autofocus
+                outlined
+                dense
+                label="Altura"
+                type="number"
+                step="0.01"
+                min="0"
+                v-model="height"
+                suffix="m"
+              ></v-text-field>
+              <v-text-field
+                outlined
+                dense
+                label="Peso"
+                type="number"
+                min="0"
+                v-model="weight"
+                suffix="kg"
+              ></v-text-field>
+              <v-text-field filled readonly label="IMC" :value="imc"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 export default {
-  props: {
-    title: String,
-  },
   data() {
     return {
       height: 0,
       weight: 0,
-    }
+    };
   },
   computed: {
     imc: {
-      get: function () {
-        let imc = this.weight / ( this.height * this.height );
+      get: function() {
+        if (this.height == 0 || this.weight == 0) return 0;
+        let imc = this.weight / (this.height * this.height);
         imc = Math.round(imc * 10) / 10;
-        return imc
-      }
-    }
-  }
-}
+        return imc;
+      },
+    },
+  },
+};
 </script>
-
-<style scoped>
-.row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-}
-.mainContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-}
-input {
-  margin-bottom: 10px;
-}
-</style>
